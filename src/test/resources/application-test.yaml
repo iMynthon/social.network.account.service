@@ -1,0 +1,56 @@
+server:
+  port: ${ACCOUNT_PORT:8790}
+spring:
+  application:
+    name: account-service
+  output:
+    ansi:
+      enabled: ALWAYS
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: UTC
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      group-id: social-network-authorization-group
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: 'none'
+  liquibase:
+    change-log: 'classpath*:db/changelog/db.changelog-master.yaml'
+    enabled: true
+    drop-first: false
+  datasource:
+    hikari:
+      schema: test_schema
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS test_schema
+      connection-timeout: 10000
+  cloud:
+    openfeign:
+      client:
+        config:
+          auth:
+            url: 'http://localhost:8790'
+            connect-timeout: 5000
+            read-timeout: 5000
+            logger-level: FULL
+logging:
+  level:
+    social:
+      network:
+        account:
+          openfeign:
+            AuthClient: debug
+  pattern:
+    console: '%clr(%d{HH:mm:ss}){faint} %clr(%-5level) %clr([%logger{0}]){cyan} %clr(:){faint} %m%n'
+eureka:
+  client:
+    enabled: false
+app:
+  kafka:
+    topics:
+      block: account-block
+      delete: account-delete
+      registered: check-user-if-exists-response

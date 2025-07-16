@@ -1,0 +1,62 @@
+server:
+  port: ${ACCOUNT_PORT:8055}
+spring:
+  application:
+    name: account-service
+  output:
+    ansi:
+      enabled: ALWAYS
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: UTC
+  kafka:
+    bootstrap-servers: 45.140.169.58:9092,45.140.169.58:9093,45.140.169.58:9094
+    consumer:
+      auto-offset-reset: earliest
+      group-id: social-network-authorization-group
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: 'none'
+  liquibase:
+    change-log: 'classpath*:db/changelog/db.changelog-master.yaml'
+    enabled: true
+    drop-first: false
+  datasource:
+    url: jdbc:postgresql://45.140.169.58:5432/account_db
+    password: 'c8aedc5c-32c3-478a-9698-c51aff6b7031'
+    username: 'account-service'
+    hikari:
+      schema: account_schema
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS account_schema
+      connection-timeout: 10000
+  cloud:
+    openfeign:
+      client:
+        config:
+          auth:
+            url: 'http://45.140.169.58:8085'
+            connect-timeout: 5000
+            read-timeout: 5000
+            logger-level: BASIC
+logging:
+  level:
+    social:
+      network:
+        account:
+          openfeign:
+            AccountFeignClient: debug
+  pattern:
+    console: '%clr(%d{HH:mm:ss}){faint} %clr(%-5level) %clr([%logger{0}]){cyan} %clr(:){faint} %m%n'
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://45.140.169.58:8761/eureka/
+app:
+  kafka:
+    topics:
+      block: account-block
+      delete: account-delete
+      registered: check-user-if-exists-response
