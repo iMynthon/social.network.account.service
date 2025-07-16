@@ -8,10 +8,10 @@
 		<version>3.3.12</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>social.network.account</groupId>
-	<artifactId>social.network.account</artifactId>
+	<groupId>social.network.account.service</groupId>
+	<artifactId>social.network.account.service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>social.network.account</name>
+	<name>social.network.account.service</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
