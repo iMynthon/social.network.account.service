@@ -30,11 +30,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security,
                                            JwtAuthenticationFilter tokenFilter) throws Exception {
-        security.authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
+        security.csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(HttpBasicConfigurer<HttpSecurity>::disable)
+                .authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(HttpBasicConfigurer<HttpSecurity>::disable)
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
         return security.build();
     }

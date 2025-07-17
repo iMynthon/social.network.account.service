@@ -23,4 +23,8 @@ public interface AccountRepository extends JpaRepository<Account, UUID>, JpaSpec
     @Modifying
     @Query(value = "UPDATE accounts SET is_blocked = :isBlocked WHERE id = :id", nativeQuery = true)
     void setIsBlocked(@Param("id") UUID id, @Param("isBlocked") boolean isBlocked);
+
+    @Modifying
+    @Query(value = "UPDATE accounts SET is_online = :isOnline WHERE id = :id",nativeQuery = true)
+    void setIsOnline(@Param("id") UUID id,@Param("isOnline") boolean isOnline);
 }
